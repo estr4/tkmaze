@@ -16,8 +16,8 @@ class Maze:
         - 2d Labyrinth aus Zellen
         - generiert mit folgendem algorithmus: https://en.wikipedia.org/wiki/Depth-first_search
         -> rekursiv
-        - eingangspunkt = [0|0]
-        - ausgangspunkt = [width|height]
+        -> iterativ
+        - "einstiegspunkt" = [0|0]
     """
 
     def __init__(self, grid_width: int, grid_height: int):
@@ -68,7 +68,7 @@ class Maze:
 
         return maze_str
 
-    def get_neighbours(self, cell_index: tuple[int, int]):
+    def get_neighbours(self, cell_index: tuple[int, int]) -> list[Cell]:
         "gibt alle nachbaren einer Zelle wieder"
         x, y = cell_index
         neighbors = []
@@ -84,7 +84,7 @@ class Maze:
                 neighbors.append(self.grid[nx][ny])
         return neighbors
 
-    def get_unvisited_neighbours(self, cell_index: tuple[int, int]):
+    def get_unvisited_neighbours(self, cell_index: tuple[int, int]) -> list[Cell]:
         "gibt alle unbesuchten nachbaren einer Zelle wieder"
         neighbors = self.get_neighbours(cell_index)
         return [nb for nb in neighbors if not nb.visited]
