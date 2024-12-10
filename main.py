@@ -9,11 +9,9 @@ Hilfreiche Links:
     -- Raycasting --
     https://lodev.org/cgtutor/raycasting.html
 """
-# import tkinter as tk
-#
 from src.cell import Cell
 from src.maze import Maze
-# from src import render
+from src.render import Renderer
 
 if __name__ == "__main__":
     # dieser codeblock wird ausgefürt, wenn das programm gestartet wird
