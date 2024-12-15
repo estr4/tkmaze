@@ -8,7 +8,6 @@ import sys
 from .cell import Cell
 
 sys.setrecursionlimit(100000)  # Sollte Sehr Hoch sein
-
 #random.seed(1) # für debugging: macht random nicht mehr zufällig
 
 class Maze:
@@ -29,20 +28,59 @@ class Maze:
                       for y in range(grid_height)]
                       for x in range(grid_width)]
 
-        # self.depth_first_iterative()
+        #self.depth_first_iterative()
         self.depth_first_recursive(self.grid[0][0])
 
     def __iter__(self):
         "__iter__ erklärt python, wie man die Maze mit list() in eine array/liste umwandelt"
-        for row in self.grid:
-            yield from row
+        maze_iter = []
+        for y in range(self.grid_height):
+            # obere Wände
+            top_line = []
+            # Zellen-Zeile
+            mid_line = []
+            for x in range(self.grid_width):
+                cell = self.grid[x][y]
+
+                # Nördliche Wand
+                top_line.append(1) # Ecken sind immer 1
+                if cell.walls["north"]:
+                    top_line.extend([1] * 3)
+                else:
+                    top_line.extend([0] * 3)
+
+                # Linke Wand und Zelle selbst
+                if cell.walls["west"]:
+                    mid_line.append(1)
+                else:
+                    mid_line.append(0)
+                mid_line.extend([0] * 3)
+
+            # Wand Ganz Rechts
+            top_line.append(1) # Right boundary
+            mid_line.append(1) # Right boundary
+            maze_iter.append(top_line)
+            maze_iter.append(mid_line)
+
+        # untere Wand für die Letzte Reihe
+        bottom_line = []
+        for x in range(self.grid_width):
+            bottom_line.extend([1] * 4)
+        maze_iter.append(bottom_line)
+
+        # startzelle = 2, endzelle = 3
+        maze_iter[1][2] = 2
+        maze_iter[self.grid_height*2-1][self.grid_width*4-2] = 3
+
+        yield from maze_iter
 
     def __str__(self) -> str:
         "__str__ erklärt python, wie man die Maze class in einen string umwandelt (z.B in print())"
         maze_str = ""
         for y in range(self.grid_height):
-            # obere Wände für die Reihe
+            # obere Wände
             top_line = ""
+            # Zellen-Zeile
             mid_line = ""
             for x in range(self.grid_width):
                 cell = self.grid[x][y]
@@ -68,7 +106,7 @@ class Maze:
 
         return maze_str
 
-    def get_neighbours(self, cell_index: tuple[int, int]) -> list[Cell]:
+    def get_neighbours(self, cell_index) -> list[Cell]:
         "gibt alle nachbaren einer Zelle wieder"
         x, y = cell_index
         neighbors = []
@@ -84,12 +122,12 @@ class Maze:
                 neighbors.append(self.grid[nx][ny])
         return neighbors
 
-    def get_unvisited_neighbours(self, cell_index: tuple[int, int]) -> list[Cell]:
+    def get_unvisited_neighbours(self, cell_index) -> list[Cell]:
         "gibt alle unbesuchten nachbaren einer Zelle wieder"
         neighbors = self.get_neighbours(cell_index)
         return [nb for nb in neighbors if not nb.visited]
 
-    def has_unvisited_neighbours(self, cell_index: tuple[int, int]) -> bool:
+    def has_unvisited_neighbours(self, cell_index) -> bool:
         "gibt an, ob noch unbesuchte nachbaren existieren"
         if self.get_unvisited_neighbours(cell_index):
             return True

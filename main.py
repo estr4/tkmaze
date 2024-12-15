@@ -15,5 +15,6 @@ from src.render import Renderer
 
 if __name__ == "__main__":
     # dieser codeblock wird ausgefürt, wenn das programm gestartet wird
-    m = Maze(10,9)
+    m = Maze(2,4)
     print(m)
+    print(list(m))
