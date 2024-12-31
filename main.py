@@ -1,6 +1,6 @@
 """tkMaze: Eine 3d Labyrinth simulation in tkinter
 
-für mehr Infos, beachte die Dokumentation im README.md
+für mehr Infos, beachte die Dokumentation im README.md.
 Um das Program zu starten, führe diese Datei mit python3 aus.
 
 .. Online Repository:
@@ -31,7 +31,7 @@ def console(maze):
                      ╰-> """))
         match user:
             case 1:
-                print("\n", maze, "\n")
+                print(maze)
             case 2:
                 for row in list(maze):
                     print(row)
@@ -43,7 +43,7 @@ def window(maze):
     window erzeugt tkinter Output.
 
     Args:
-    maze (Maze): Das Labyrinth.
+        maze (Maze): Das Labyrinth.
     """
     # initialisiere tkinter
     root = tk.Tk()
@@ -55,6 +55,11 @@ def window(maze):
 if __name__ == "__main__":
     # dieser codeblock wird ausgefürt, wenn das programm gestartet wird
     m = Maze(5,6) # erstellt ein labyrinth mit x * y zellen
+
+    # erstelle das Labyrinth (rekursiv oder iterativ)
+    #m.generate_dfs_iterative(m.grid[0][0])
+    m.generate_dfs_recursive(m.grid[0][0])
+
 
     # erstelt 2 threads, damit die shell und das fenster voneinander unabhängig sind
     c = Thread(target=console, args=(m,))

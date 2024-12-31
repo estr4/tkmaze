@@ -1,13 +1,27 @@
-class Cell:
-    """ Cell class:
-        - representiert 1 Tile im Labyrinth
-        - 4 Wände (Booleans für existiert und existiert nicht)
-        - besucht (Boolean)
-        - x and y Koordinaten
-    """
+"""src/cell.py
 
-    def __init__(self, pos_x: int, pos_y: int, visited: bool = False):
-        "__init__ wird aufgerufen, wenn eine variable = Cell() gesetzt wird"
+Enthält Die Cell class, aus der das Labyrinth Besteht.
+"""
+
+class Cell:
+    """
+    Class, die eine Zelle darstellt.
+
+    Attributes:
+        pos_x (int): x-Position der Zelle im Labyrinth.
+        pos_y (int): y-Position der Zelle im Labyrinth.
+        visited (bool): markiert die Zelle as besucht oder unbesucht.
+    """
+    def __init__(self, pos_x , pos_y, visited = False):
+        """
+        __init__ wird aufgerufen, wenn eine Zelle Initialisiert wird.
+        
+        Args:
+            pos_x (int): x-Position der Zelle im Labyrinth.
+            pos_y (int): y-Position der Zelle im Labyrinth.
+            visited (bool): markiert die Zelle as besucht oder unbesucht.
+            walls (dict): Enthält die 4 Wände um die Zelle, diese können an oder aus sein.
+        """
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.visited = visited
@@ -18,33 +32,47 @@ class Cell:
                 "west": True,
         }
 
-    def is_wall_between(self, nb) -> bool:
-        "gibt True an, wenn die wand zu einem nachbar existiert, sonst False"
-        if self.walls["north"] and nb.walls["south"]:
-            return True
-        if self.walls["south"] and nb.walls["north"]:
-            return True
-        if self.walls["west"] and nb.walls["east"]:
-            return True
-        if self.walls["east"] and nb.walls["west"]:
-            return True
+    def is_wall_between(self, nb_cell) -> bool:
+        """
+        is_wall_between gibt True an, wenn die wand zu einem nachbar an oder aus ist.
+
+        Args:
+            nb_cell (Cell): die Nachbarzelle.
+
+        Returns:
+            bool: True, wenn es die Wand gibt, sonst False.
+        """
+        if self.pos_x == nb_cell.pos_x:   # Gleiche X
+            if self.pos_y - nb_cell.pos_y == 1:  # Nachbar ist oben
+                return self.walls["north"]
+            if self.pos_y - nb_cell.pos_y == -1: # Nachbar ist unten
+                return self.walls["south"]
+        elif self.pos_y == nb_cell.pos_y: # Gleiche Y
+            if self.pos_x - nb_cell.pos_x == 1:  # Nachbar ist links
+                return self.walls["west"]
+            if self.pos_x - nb_cell.pos_x == -1: # Nachbar ist rechts
+                return self.walls["east"]
 
         return False
 
-    def remove_wall_between(self, nb):
-        "entfernt die wand zwischen 2 nachbaren"
-        if self.pos_x == nb.pos_x:  # Gleiches X
-            if self.pos_y - nb.pos_y == 1:  # Nachbar ist oben
-                self.walls["north"] = False
-                nb.walls["south"] = False
-            elif self.pos_y - nb.pos_y == -1:  # Nachbar ist unten
-                self.walls["south"] = False
-                nb.walls["north"] = False
+    def remove_wall_between(self, nb_cell):
+        """
+        remove_wall_between entfernt die wand zwischen 2 benachbarten Zellen.
 
-        elif self.pos_y == nb.pos_y:  # Gleiche Y
-            if self.pos_x - nb.pos_x == 1:  # Nachbar ist links
+        Args:
+                nb_cell (Cell): die Nachbarzelle.
+        """
+        if self.pos_x == nb_cell.pos_x:  # Gleiche X
+            if self.pos_y - nb_cell.pos_y == 1: # Nachbar ist oben
+                self.walls["north"] = False
+                nb_cell.walls["south"] = False
+            if self.pos_y - nb_cell.pos_y == -1: # Nachbar ist unten
+                self.walls["south"] = False
+                nb_cell.walls["north"] = False
+        elif self.pos_y == nb_cell.pos_y: # Gleiche Y
+            if self.pos_x - nb_cell.pos_x == 1:  # Nachbar ist links
                 self.walls["west"] = False
-                nb.walls["east"] = False
-            elif self.pos_x - nb.pos_x == -1:  # Nachbar ist rechts
+                nb_cell.walls["east"] = False
+            if self.pos_x - nb_cell.pos_x == -1: # Nachbar ist rechts
                 self.walls["east"] = False
-                nb.walls["west"] = False
+                nb_cell.walls["west"] = False
