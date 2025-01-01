@@ -17,6 +17,7 @@ class Maze:
     Attributes:
         grid_width (int): länge des Labyrinths in Zellen.
         grid_height (int): höhe des Labyrinths in Zellen.
+        grid ([[Cells]]): Labyrinth bestehend aus Reihen von Zellen.
     """
     def __init__(self, grid_width, grid_height):
         """
@@ -25,7 +26,6 @@ class Maze:
         Args:
             grid_width (int): länge des Labyrinths in Zellen.
             grid_height (int): höhe des Labyrinths in Zellen.
-            grid ([[Cells]]): Labyrinth bestehend aus Reihen von Zellen.
         """
         self.grid_width = grid_width
         self.grid_height = grid_height

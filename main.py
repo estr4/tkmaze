@@ -51,14 +51,15 @@ def window(maze):
 
     # initialisiere den Raycaster
     r = Raycaster(maze, root)
+    r.run()
 
 if __name__ == "__main__":
     # dieser codeblock wird ausgefürt, wenn das programm gestartet wird
     m = Maze(5,6) # erstellt ein labyrinth mit x * y zellen
 
     # erstelle das Labyrinth (rekursiv oder iterativ)
-    #m.generate_dfs_iterative(m.grid[0][0])
-    m.generate_dfs_recursive(m.grid[0][0])
+    m.generate_dfs_iterative(m.grid[0][0])
+    #m.generate_dfs_recursive(m.grid[0][0])
 
 
     # erstelt 2 threads, damit die shell und das fenster voneinander unabhängig sind

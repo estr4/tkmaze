@@ -11,6 +11,7 @@ class Cell:
         pos_x (int): x-Position der Zelle im Labyrinth.
         pos_y (int): y-Position der Zelle im Labyrinth.
         visited (bool): markiert die Zelle as besucht oder unbesucht.
+        walls (dict): Enthält die 4 Wände um die Zelle, diese können an oder aus sein.
     """
     def __init__(self, pos_x , pos_y, visited = False):
         """
@@ -20,7 +21,6 @@ class Cell:
             pos_x (int): x-Position der Zelle im Labyrinth.
             pos_y (int): y-Position der Zelle im Labyrinth.
             visited (bool): markiert die Zelle as besucht oder unbesucht.
-            walls (dict): Enthält die 4 Wände um die Zelle, diese können an oder aus sein.
         """
         self.pos_x = pos_x
         self.pos_y = pos_y
@@ -34,7 +34,7 @@ class Cell:
 
     def is_wall_between(self, nb_cell) -> bool:
         """
-        is_wall_between gibt True an, wenn die wand zu einem nachbar an oder aus ist.
+        is_wall_between gibt an, ob die Wand zu einem Nachbar an oder aus ist.
 
         Args:
             nb_cell (Cell): die Nachbarzelle.
@@ -57,10 +57,10 @@ class Cell:
 
     def remove_wall_between(self, nb_cell):
         """
-        remove_wall_between entfernt die wand zwischen 2 benachbarten Zellen.
+        remove_wall_between entfernt die Wand zwischen 2 benachbarten Zellen.
 
         Args:
-                nb_cell (Cell): die Nachbarzelle.
+            nb_cell (Cell): die Nachbarzelle.
         """
         if self.pos_x == nb_cell.pos_x:  # Gleiche X
             if self.pos_y - nb_cell.pos_y == 1: # Nachbar ist oben
