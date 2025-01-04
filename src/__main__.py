@@ -10,9 +10,9 @@ https://github.com/estr4/tkmaze
 import os
 import tkinter as tk
 from threading import Thread
-from src.cell import Cell
-from src.maze import Maze
-from src.render import Raycaster
+from .cell import Cell
+from .maze import Maze
+from .render import Raycaster
 
 def console(maze):
     """
