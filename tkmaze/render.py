@@ -42,7 +42,7 @@ class Raycaster:
         self.height = self.root.winfo_screenheight()
         self.canvas = tk.Canvas(self.root, width=self.width, height=self.height)
         self.canvas.pack()
-        self.quit = False
+        self._quit = False
 
         # Kamera Variablen
         self.mov_speed = 0.2
@@ -66,7 +66,7 @@ class Raycaster:
         self.root.bind('s', self.down_press)
         self.root.bind('d', self.right_press)
 
-        while not self.quit:
+        while not self._quit:
             self.width = self.root.winfo_width()
             self.height = self.root.winfo_height()
             self.canvas.delete('all')
@@ -77,7 +77,7 @@ class Raycaster:
         """
         destroy_window setzt das quit signal zu True und zerstört das Fenster.
         """
-        self.quit = True
+        self._quit = True
         self.root.destroy()
 
     def render(self):
@@ -164,6 +164,7 @@ class Raycaster:
         """
         hit = False
         side = 0
+        # während noch keine Seite getroffen wurde
         while not hit: # Seite noch nicht getroffen, gehe zur nächsten Seite
             if side_dist[0] < side_dist[1]: # X-Seite, nicht getroffen
                 side_dist[0] += delta_dist[0]
@@ -196,7 +197,7 @@ class Raycaster:
         draw_start = max(draw_start, 0) # negative pixel existieren nicht
         draw_end = min(draw_end, self.height) # pixel über dem fenster existieren nicht
 
-        # wähle Farbe je nach Zahl in map_data an der Position der Wand
+        # wählt Farbe je nach Zahl in map_data an der Position der Wand
         wallcolors = [[150,150,150], [50,50,50], [50,150,50], [0,0,150]]
         color = wallcolors[self.map_data[map_pos[0]][map_pos[1]]]
 
@@ -205,9 +206,9 @@ class Raycaster:
                 # verdunkelt pixel, je nach Seite
                 color[k] = int(v / 1.2)
 
-        # wandle RGB Werte für tkinter in Hex um
+        # wandelt RGB Werte für tkinter in Hex um
         hex_color = f"#{color[0]:02x}{color[1]:02x}{color[2]:02x}"
-        # Zeiche Vertikale Linie auf Canvas
+        # zeichet vertikale Linie auf Canvas
         self.canvas.create_line(x, draw_start, x, draw_end, fill=hex_color)
 
     def left_press(self, event):

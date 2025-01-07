@@ -195,14 +195,14 @@ class Maze:
         current_cell.visited = True
         current_index = (current_cell.pos_x, current_cell.pos_y)
 
-        # Choose one of the unvisited neighbors
+        # wählt einen unbesuchten Nachbarn aus
         unvisited_nb_cells = self.get_unvisited_neighbors(current_index)
         random.shuffle(unvisited_nb_cells)
         for nb in unvisited_nb_cells:
             if not nb.visited:
-                # Remove the wall between the current cell and the chosen cell
+                # entfernt die Wand zwischen der Zelle und dem Nachbarn
                 current_cell.remove_wall_between(nb)
-                # Invoke the routine recursively for the chosen cell
+                # ruft die Routine rekursiv mit dem Nachbarn als neue Zelle auf
                 self.generate_dfs_recursive(nb)
 
     def generate_dfs_iterative(self, start_cell):
@@ -213,27 +213,26 @@ class Maze:
             start_cell (Cell): Die als erstes zu besuchende Zelle.
         """
         # Iterative Version
-        # Choose the initial cell, mark it as visited and push it to the stack
+        # initialisiert einen Stack
         stack = []
         start_cell.visited = True
         stack.append(start_cell)
 
-        # While the stack is not empty
+        # während es noch Zellen im Stack gibt
         while stack:
-            # Pop a cell from the stack and make it a current cell
+            # entnehme die letzte Zelle vom Stack
             current_cell = stack[-1]
             current_cell.visited = True
             current_index = (current_cell.pos_x, current_cell.pos_y)
 
             unvisited_nb_cells = self.get_unvisited_neighbors(current_index)
-            # If the current cell has any neighbors which have not been visited
             if unvisited_nb_cells:
-                # Choose one of the unvisited neighbors
+                # wählt einen unbesuchten Nachbarn aus
                 chosen_cell = random.choice(unvisited_nb_cells)
-                # Remove the wall between the current cell and chosen cell
+                # entfernt die Wand zwischen der Zelle und dem Nachbarn
                 current_cell.remove_wall_between(chosen_cell)
-                # Mark the chosen cell as visited and push it to the stack
                 current_cell.visited = True
+                # fügt den Nachbarn dem Stack hinzu
                 stack.append(chosen_cell)
             else:
                 # Backtrack
